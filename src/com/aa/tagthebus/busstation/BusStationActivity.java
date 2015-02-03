@@ -1,22 +1,33 @@
 package com.aa.tagthebus.busstation;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 import com.aa.tagthebus.R;
+import com.aa.tagthebus.buspicture.BusPictureActivity;
+import com.aa.tagthebus.busstation.APIResponse.BusStation;
 
 
-public class BusStationActivity extends Activity {
-
+public class BusStationActivity extends ActionBarActivity {
+	
+	public final static String BUS_STATION_ID = "com.aa.tagthebus.BUS_STATION";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,7 +70,9 @@ public class BusStationActivity extends Activity {
 		private BusStationService busStationService;
 		private BusStationAdapter busStationAdapter;
 		private ListView busStationLV;
-
+		private List<BusStation> busStationList;
+		
+		
 		public PlaceholderFragment() {}
 
 		@Override
@@ -69,12 +82,21 @@ public class BusStationActivity extends Activity {
 
 			busStationService = new BusStationService();
 			busStationLV = (ListView)rootView.findViewById(R.id.busStationLV);
+			busStationLV.setOnItemClickListener(new OnItemClickListener() {
+				  @Override
+				  public void onItemClick(AdapterView<?> parent, View view,
+				    int position, long id) {
+					  Intent intent = new Intent(getActivity(), BusPictureActivity.class);
+					  intent.putExtra(BUS_STATION_ID, busStationList.get(position).getId());
+					  startActivity(intent);
+				  }
+				});
 			getBusStations();
 			return rootView;
 		}
 
 		private void getBusStations(){
-			busStationService.getBusStations(new Callback<BusStationService.APIResponse>() {
+			busStationService.getBusStations(new Callback<APIResponse>() {
 
 				@Override
 				public void failure(RetrofitError retrofitError) {
@@ -82,9 +104,16 @@ public class BusStationActivity extends Activity {
 				}
 
 				@Override
-				public void success(BusStationService.APIResponse data, Response arg1) {
-					if (data.getData().getNearstations().size() > 0) {
-						busStationAdapter = new BusStationAdapter(getActivity().getApplicationContext(), data.getData().getNearstations());
+				public void success(APIResponse data, Response arg1) {
+					busStationList = data.getData().getNearstations();
+					if (busStationList.size() > 0) {
+						Collections.sort(busStationList, new Comparator<BusStation>(){
+					        @Override
+							public int compare(BusStation o1, BusStation o2) {
+					           return o1.getStreet_name().compareToIgnoreCase(o2.getStreet_name());
+					        }
+					    });
+						busStationAdapter = new BusStationAdapter(getActivity().getApplicationContext(), busStationList);
 						busStationLV.setAdapter(busStationAdapter);
 					}
 				}

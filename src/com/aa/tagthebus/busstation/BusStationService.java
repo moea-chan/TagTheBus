@@ -1,7 +1,5 @@
 package com.aa.tagthebus.busstation;
 
-import java.util.List;
-
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -44,33 +42,5 @@ public class BusStationService {
         service.busStation(callback);
     }
 
-    public class APIResponse{
-    	private String code;
-    	private APIData data;
-    	
-    	public String getCode() {
-			return code;
-		}
-		public void setCode(String code) {
-			this.code = code;
-		}
-		public APIData getData() {
-			return data;
-		}
-		public void setData(APIData data) {
-			this.data = data;
-		}
-    }
-    public class APIData{
-    	private List<BusStation> nearstations;
-
-		public List<BusStation> getNearstations() {
-			return nearstations;
-		}
-
-		public void setNearstations(List<BusStation> nearstations) {
-			this.nearstations = nearstations;
-		}
-    	
-    }
+    
 }

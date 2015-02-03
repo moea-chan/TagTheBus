@@ -3,6 +3,7 @@ package com.aa.tagthebus.busstation;
 import java.util.List;
 
 import com.aa.tagthebus.R;
+import com.aa.tagthebus.busstation.APIResponse.BusStation;
 
 import android.content.Context;
 import android.view.LayoutInflater;
