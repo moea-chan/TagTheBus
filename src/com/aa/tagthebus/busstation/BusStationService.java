@@ -7,16 +7,13 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 
-import com.google.gson.Gson;
-
 /**
  * Created by Aude on 2/2/2015.
  */
 public class BusStationService {
     private BusServiceStub service;
     private final String API_DOMAIN = "http://barcelonaapi.marcpous.com/";
-    RequestInterceptor requestInterceptor;
-    Gson gson;
+    private RequestInterceptor requestInterceptor;
 
     public interface BusServiceStub {
 
