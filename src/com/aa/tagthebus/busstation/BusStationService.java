@@ -5,12 +5,9 @@ import java.util.List;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
-import retrofit.converter.GsonConverter;
 import retrofit.http.GET;
-import rx.Observable;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * Created by Aude on 2/2/2015.
