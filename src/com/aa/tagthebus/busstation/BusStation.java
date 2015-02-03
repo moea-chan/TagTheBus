@@ -12,7 +12,7 @@ public class BusStation {
     private String lat;
     private String lon;
     private String furniture;
-    private String[] buses;
+    private String buses;
     private String distance;
 
     public String getId() {
@@ -79,11 +79,11 @@ public class BusStation {
         this.furniture = furniture;
     }
 
-    public String[] getBuses() {
+    public String getBuses() {
         return buses;
     }
 
-    public void setBuses(String[] buses) {
+    public void setBuses(String buses) {
         this.buses = buses;
     }
 

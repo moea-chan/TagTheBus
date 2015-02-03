@@ -2,6 +2,7 @@ package com.aa.tagthebus.busstation;
 
 import java.util.List;
 
+import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.converter.GsonConverter;
@@ -24,7 +25,7 @@ public class BusStationService {
 
         // get all barcelona bus stations
         @GET("/bus/nearstation/latlon/41.3985182/2.1917991/1.json")
-        public Observable<List<BusStation>> busStation();
+        public void busStation(Callback<APIResponse> callback);
     }
 
     public BusStationService(){
@@ -34,23 +35,48 @@ public class BusStationService {
                 request.addHeader("Accept", "application/json");
             }
         };
-        gson = new GsonBuilder()
-                .registerTypeAdapter(BusStation.class, new BusStationDeserializer())
-                .create();
+        
         
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setEndpoint(API_DOMAIN)
-                .setConverter(new GsonConverter(gson))
                 .setRequestInterceptor(requestInterceptor)
                 .build();
 
         service = restAdapter.create(BusServiceStub.class);
     }
 
-    public Observable<List<BusStation>> getBusStations() {
-        return service.busStation();
+    public void getBusStations(Callback<APIResponse> callback) {
+        service.busStation(callback);
     }
 
+    public class APIResponse{
+    	private String code;
+    	private APIData data;
+    	
+    	public String getCode() {
+			return code;
+		}
+		public void setCode(String code) {
+			this.code = code;
+		}
+		public APIData getData() {
+			return data;
+		}
+		public void setData(APIData data) {
+			this.data = data;
+		}
+    }
+    public class APIData{
+    	private List<BusStation> nearstations;
 
+		public List<BusStation> getNearstations() {
+			return nearstations;
+		}
+
+		public void setNearstations(List<BusStation> nearstations) {
+			this.nearstations = nearstations;
+		}
+    	
+    }
 }
