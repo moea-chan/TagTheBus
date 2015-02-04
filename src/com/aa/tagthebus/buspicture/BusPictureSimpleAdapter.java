@@ -9,8 +9,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.aa.tagthebus.R;
-
-import contentprovider.DBContract.BusPicture;
+import com.aa.tagthebus.contentprovider.DBContract.BusPicture;
 
 public class BusPictureSimpleAdapter extends SimpleCursorAdapter {
 	

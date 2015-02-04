@@ -1,6 +1,8 @@
-package contentprovider;
+package com.aa.tagthebus.contentprovider;
 
 import java.util.HashMap;
+
+import com.aa.tagthebus.contentprovider.DBContract.BusPicture;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -13,7 +15,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
-import contentprovider.DBContract.BusPicture;
 
 public class BusPictureProvider extends ContentProvider {
 

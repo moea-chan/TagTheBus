@@ -10,7 +10,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -22,18 +24,33 @@
             android:theme="@style/Theme.AppCompat.Light" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name="com.aa.tagthebus.buspicture.BusPictureActivity"
+            android:name=".buspicture.BusPictureActivity"
             android:label="@string/title_activity_bus_picture"
-            android:theme="@style/Theme.AppCompat.Light"
-            android:parentActivityName=".busstation.BusStationActivity" >
+            android:parentActivityName=".busstation.BusStationActivity"
+            android:theme="@style/Theme.AppCompat.Light" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.aa.tagthebus.busstation.BusStationActivity" />
         </activity>
+        <activity
+            android:name="com.aa.tagthebus.buspicture.BusPictureValidationActivity"
+            android:label="@string/title_activity_bus_picture_validation"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:parentActivityName=".buspicture.BusPictureActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.aa.tagthebus.buspicture.BusPictureActivity" />
+        </activity>
+        
+        <provider
+            android:name=".contentprovider.BusPictureProvider"
+            android:authorities="com.aa.tagthebus" >
+        </provider>
     </application>
 
 </manifest>

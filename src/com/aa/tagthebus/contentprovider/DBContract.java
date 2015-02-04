@@ -1,4 +1,4 @@
-package contentprovider;
+package com.aa.tagthebus.contentprovider;
 
 import android.provider.BaseColumns;
 
