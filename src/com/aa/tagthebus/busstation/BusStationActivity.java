@@ -26,7 +26,7 @@ import com.aa.tagthebus.busstation.APIResponse.BusStation;
 
 public class BusStationActivity extends ActionBarActivity {
 	
-	public final static String BUS_STATION_ID = "com.aa.tagthebus.BUS_STATION";
+	public final static String BUS_STATION_ID = "busStationId";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

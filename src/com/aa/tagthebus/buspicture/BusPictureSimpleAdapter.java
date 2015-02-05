@@ -1,15 +1,21 @@
 package com.aa.tagthebus.buspicture;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 import com.aa.tagthebus.R;
+import com.aa.tagthebus.contentprovider.BusPictureProvider;
 import com.aa.tagthebus.contentprovider.DBContract.BusPicture;
+import com.squareup.picasso.Picasso;
 
 public class BusPictureSimpleAdapter extends SimpleCursorAdapter {
 	
@@ -34,50 +40,56 @@ public class BusPictureSimpleAdapter extends SimpleCursorAdapter {
 		}
 		TextView titleTV = (TextView)convertView.findViewById(R.id.busPictureTitleTV);
 		TextView creationDateTV = (TextView)convertView.findViewById(R.id.busPictureDateTV);;
-
+		ImageView pictureIV = (ImageView)convertView.findViewById(R.id.busPictureIV);
+		
 		cursor.moveToPosition(position);
 
-		//pseudo
+		//title
 		String title = cursor.getString(cursor.getColumnIndex(BusPicture.COLUMN_NAME_TITLE));
 		titleTV.setText(title);
 
-		//image
+		//creation date
 		String creationDate = cursor.getString(cursor.getColumnIndex(BusPicture.COLUMN_NAME_CREATION_DATE));
 		creationDateTV.setText(creationDate);
+		
+		
+		//picture
+		Uri pictureUri = Uri.parse(cursor.getString(cursor.getColumnIndex(BusPicture.COLUMN_NAME_URI)));
+		
 //		progressBar.setVisibility(View.VISIBLE);
 		
-//		final Button addFollow = ButterKnife.findById(convertView, R.id.add_follow);
+		final ImageButton removePicture = (ImageButton)convertView.findViewById(R.id.removePictureIB);
 //		addFollow.setVisibility(View.GONE);
 		
 		final int curPosition = position;
 		
 		//ajoute aux amis le user courant au click sur bouton
-//		addFollow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//			public void onClick(View v) {
-//        		cursor.moveToPosition(curPosition);
-//        		int currentUserId = cursor.getInt(cursor.getColumnIndex(BaseColumns._ID));
-//        		
-//        		ContentValues newVvalues = new ContentValues();
-//        		newVvalues.put(Users.COLUMN_NAME_FOLLOWED, 1);
-//        		context.getContentResolver().update(
-//        				ContentUris.withAppendedId(GeolocProvider.FOLLOWERS_CONTENT_URI, currentUserId), newVvalues, null, null);
-//            }
-//        });
+		removePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+			public void onClick(View v) {
+        		cursor.moveToPosition(curPosition);
+        		int currentPictureId = cursor.getInt(cursor.getColumnIndex(BusPicture._ID));
+        		String[] args = {""};
+        		Uri uri = BusPictureProvider.BUS_PICTURE_CONTENT_URI.buildUpon().appendPath(String.valueOf(currentPictureId)).build();
+        		
+        		context.getContentResolver().delete(uri, "", args);
+            }
+        });
 		//charge l'image du user
-//		Picasso.with(context)
-//		.load(avatarPicUrl)
-//		.error(R.drawable.ic_launcher)
-//		.resize(120, 120)
-//		.centerCrop()
-//		.into(userImageView, new EmptyCallback() {
+		Picasso.with(context)
+		.load(pictureUri)
+		.error(R.drawable.ic_launcher)
+		.fit()
+		.centerCrop()
+		.into(pictureIV);
+//				, new EmptyCallback() {
 //			@Override public void onSuccess() {
-//				progressBar.setVisibility(View.GONE);
+////				progressBar.setVisibility(View.GONE);
 //				addFollow.setVisibility(View.VISIBLE);
 //			} 
 //			@Override
 //			public void onError() {
-//				progressBar.setVisibility(View.GONE);
+////				cprogressBar.setVisibility(View.GONE);
 //				addFollow.setVisibility(View.VISIBLE);
 //			} 
 //		});

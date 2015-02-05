@@ -2,8 +2,6 @@ package com.aa.tagthebus.contentprovider;
 
 import java.util.HashMap;
 
-import com.aa.tagthebus.contentprovider.DBContract.BusPicture;
-
 import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -15,6 +13,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+
+import com.aa.tagthebus.contentprovider.DBContract.BusPicture;
 
 public class BusPictureProvider extends ContentProvider {
 
@@ -29,11 +29,13 @@ public class BusPictureProvider extends ContentProvider {
 	private static HashMap<String, String> BUS_PICTURE_PROJECTION_MAP;
 
 	static final int BUS_PICTURE = 1;
+	static final int BUS_PICTURE_ID = 2;
 
 	static final UriMatcher uriMatcher;
 	static {
 		uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
 		uriMatcher.addURI(PROVIDER_NAME, BusPicture.TABLE_NAME, BUS_PICTURE);
+		uriMatcher.addURI(PROVIDER_NAME, BusPicture.TABLE_NAME+"/*", BUS_PICTURE_ID);
 	}
 
 	/**
@@ -41,7 +43,7 @@ public class BusPictureProvider extends ContentProvider {
 	 */
 	private SQLiteDatabase db;
 	static final String DATABASE_NAME = "TagTheBus";
-	static final int DATABASE_VERSION = 1;
+	static final int DATABASE_VERSION = 2;
 
 
 
@@ -150,19 +152,20 @@ public class BusPictureProvider extends ContentProvider {
 		int count = 0;
 
 		switch (uriMatcher.match(uri)){
-		case BUS_PICTURE:
-			String id = uri.getPathSegments().get(1);
-			count = db.delete( BusPicture.TABLE_NAME, _ID + " = " + id, selectionArgs);
-			break;
-		default:
-			throw new IllegalArgumentException("Unknown URI " + uri);
+			case BUS_PICTURE_ID:
+				String id = uri.getLastPathSegment();
+				String[] args = {id};
+				count = db.delete(BusPicture.TABLE_NAME, _ID + "=?", args);
+				break;
+			default:
+				throw new IllegalArgumentException("Unknown URI" + uri);
 		}
 
 		getContext().getContentResolver().notifyChange(uri, null);
 		return count;
 	}
 
-	
+
 
 	@Override
 	public String getType(Uri uri) {

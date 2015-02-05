@@ -20,7 +20,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aa.tagthebus.R;
@@ -31,7 +30,10 @@ import com.aa.tagthebus.utils.ActivityLauncherUtils;
 import com.aa.tagthebus.utils.ImageUtils;
 
 public class BusPictureActivity extends ActionBarActivity{
-	private Uri photoUri;
+	
+	public final static String PICTURE_URI = "pictureUri";
+	
+	private Uri pictureUri;
 	private String busStationId;
 	
 	@Override
@@ -50,21 +52,14 @@ public class BusPictureActivity extends ActionBarActivity{
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.bus_picture, menu);
+		getMenuInflater().inflate(R.menu.menu_bus_picture, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
-		else if(id == R.id.action_take_picture){
+		if(id == R.id.action_take_picture){
 			startPhotoActivity();
 			return true;
 		}
@@ -74,10 +69,10 @@ public class BusPictureActivity extends ActionBarActivity{
 	protected void startPhotoActivity() {
 		// create Intent to take a picture and return control to the calling application
 		Intent intentPhoto = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-		photoUri = ImageUtils.getOutputMediaFileUri(ImageUtils.MEDIA_TYPE_IMAGE); // create a file to save the image
-		
-		intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, photoUri); // set the image file name
+		// create a file to save the image
+		pictureUri = ImageUtils.getOutputMediaFileUri(ImageUtils.MEDIA_TYPE_IMAGE); 
+		// set the image filename
+		intentPhoto.putExtra(MediaStore.EXTRA_OUTPUT, pictureUri); 
 
 		// start the image capture Intent
 		startActivityForResult(intentPhoto, ImageUtils.CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
@@ -102,7 +97,7 @@ public class BusPictureActivity extends ActionBarActivity{
 	// Image captured and saved to fileUri specified in the Intent
 	public void launchNamePictureActivity() {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("photoUri", photoUri.toString());
+		params.put(PICTURE_URI, pictureUri.toString());
 		params.put(BusStationActivity.BUS_STATION_ID, busStationId);
 		ActivityLauncherUtils.launchActivity(this, ActivityLauncherUtils.PICTURE_VALIDATION, params);
 	}
@@ -134,7 +129,8 @@ public class BusPictureActivity extends ActionBarActivity{
 			String[] projection = {
 					BaseColumns._ID,
 					BusPicture.COLUMN_NAME_TITLE,
-					BusPicture.COLUMN_NAME_CREATION_DATE
+					BusPicture.COLUMN_NAME_CREATION_DATE,
+					BusPicture.COLUMN_NAME_URI
 			};
 			Loader<Cursor> cursorLoader = null;
 			switch (id) {
@@ -154,11 +150,13 @@ public class BusPictureActivity extends ActionBarActivity{
 		public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 			String[] fromColumns = new String[] { 
 					BusPicture.COLUMN_NAME_TITLE, 
-					BusPicture.COLUMN_NAME_CREATION_DATE 
+					BusPicture.COLUMN_NAME_CREATION_DATE,
+					BusPicture.COLUMN_NAME_URI
 			};
 			int[] toControlIds = new int[] { 
 					R.id.busPictureTitleTV, 
-					R.id.busPictureDateTV 
+					R.id.busPictureDateTV,
+					R.id.busPictureIV
 			};
 
 			adapter = new BusPictureSimpleAdapter(

@@ -31,7 +31,7 @@ public class BusPictureValidationActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bus_picture_validation);
 		
-		pictureUri = Uri.parse(getIntent().getStringExtra("photoUri"));
+		pictureUri = Uri.parse(getIntent().getStringExtra(BusPictureActivity.PICTURE_URI));
 		
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
@@ -41,20 +41,13 @@ public class BusPictureValidationActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.bus_picture_validation, menu);
+		getMenuInflater().inflate(R.menu.menu_bus_picture_validation, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		// Handle action bar item clicks here. The action bar will
-		// automatically handle clicks on the Home/Up button, so long
-		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
-		if (id == R.id.action_settings) {
-			return true;
-		}
 		if (id == R.id.action_picture_validate) {
 			String pictureName = ((EditText)findViewById(R.id.pictureNameET)).getText().toString();
 			if (pictureName != null && pictureName.length() > 0)
