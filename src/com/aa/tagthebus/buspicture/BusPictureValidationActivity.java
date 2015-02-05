@@ -1,6 +1,9 @@
 package com.aa.tagthebus.buspicture;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import android.app.Fragment;
 import android.content.ContentValues;
@@ -30,12 +33,12 @@ public class BusPictureValidationActivity extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bus_picture_validation);
-		
+
 		pictureUri = Uri.parse(getIntent().getStringExtra(BusPictureActivity.PICTURE_URI));
-		
+
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
-					.add(R.id.container, new PlaceholderFragment()).commit();
+			.add(R.id.container, new PlaceholderFragment()).commit();
 		}
 	}
 
@@ -58,17 +61,20 @@ public class BusPictureValidationActivity extends ActionBarActivity {
 		}
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void savePictureinDB(String pictureName){
-			// Create a new map of values
-			ContentValues values = new ContentValues();
-			values.put(BusPicture.COLUMN_NAME_URI, pictureUri.toString());
-			values.put(BusPicture.COLUMN_NAME_BUS_STATION_ID, getIntent().getStringExtra(BusStationActivity.BUS_STATION_ID));
-			values.put(BusPicture.COLUMN_NAME_CREATION_DATE, new Date().toString());
-			values.put(BusPicture.COLUMN_NAME_TITLE, pictureName);
-			
-			getContentResolver().insert(BusPictureProvider.BUS_PICTURE_CONTENT_URI, values);
-			ActivityLauncherUtils.launchActivity(this, ActivityLauncherUtils.BUS_PICTURE, null);
+		// Create a new map of values
+		ContentValues values = new ContentValues();
+		values.put(BusPicture.COLUMN_NAME_URI, pictureUri.toString());
+		values.put(BusPicture.COLUMN_NAME_BUS_STATION_ID, getIntent().getStringExtra(BusStationActivity.BUS_STATION_ID));
+
+		DateFormat df = new SimpleDateFormat("dd MMMM yyyy, HH:mm", Locale.getDefault());
+		String date = df.format(Calendar.getInstance().getTime());
+		values.put(BusPicture.COLUMN_NAME_CREATION_DATE, date);
+		values.put(BusPicture.COLUMN_NAME_TITLE, pictureName);
+
+		getContentResolver().insert(BusPictureProvider.BUS_PICTURE_CONTENT_URI, values);
+		ActivityLauncherUtils.launchActivity(this, ActivityLauncherUtils.BUS_PICTURE, null);
 	}
 
 	/**
@@ -84,7 +90,7 @@ public class BusPictureValidationActivity extends ActionBarActivity {
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(
 					R.layout.fragment_bus_picture_validation, container, false);
-			
+
 			setBackgroundPicture(rootView);
 			return rootView;
 		}

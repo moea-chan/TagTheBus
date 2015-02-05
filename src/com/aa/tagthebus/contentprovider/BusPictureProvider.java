@@ -152,13 +152,13 @@ public class BusPictureProvider extends ContentProvider {
 		int count = 0;
 
 		switch (uriMatcher.match(uri)){
-			case BUS_PICTURE_ID:
-				String id = uri.getLastPathSegment();
-				String[] args = {id};
-				count = db.delete(BusPicture.TABLE_NAME, _ID + "=?", args);
-				break;
-			default:
-				throw new IllegalArgumentException("Unknown URI" + uri);
+		case BUS_PICTURE_ID:
+			String id = uri.getLastPathSegment();
+			String[] args = {id};
+			count = db.delete(BusPicture.TABLE_NAME, _ID + "=?", args);
+			break;
+		default:
+			throw new IllegalArgumentException("Unknown URI" + uri);
 		}
 
 		getContext().getContentResolver().notifyChange(uri, null);

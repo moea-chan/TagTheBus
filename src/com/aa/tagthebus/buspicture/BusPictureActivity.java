@@ -30,20 +30,21 @@ import com.aa.tagthebus.utils.ActivityLauncherUtils;
 import com.aa.tagthebus.utils.ImageUtils;
 
 public class BusPictureActivity extends ActionBarActivity{
-	
+
 	public final static String PICTURE_URI = "pictureUri";
-	
+
 	private Uri pictureUri;
 	private String busStationId;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_bus_picture);
-		
+
+		//get bus station id in param
 		Intent intent = getIntent();
 		busStationId = intent.getStringExtra(BusStationActivity.BUS_STATION_ID);
-		
+
 		if (savedInstanceState == null) {
 			getFragmentManager().beginTransaction()
 			.add(R.id.container, new PlaceholderFragment()).commit();
@@ -117,8 +118,8 @@ public class BusPictureActivity extends ActionBarActivity{
 				Bundle savedInstanceState) {
 			View rootView = inflater.inflate(R.layout.fragment_bus_picture,
 					container, false);
-			
-			
+
+
 			busPictureList = (ListView)rootView.findViewById(R.id.busPictureLV);
 			getLoaderManager().initLoader(0, null, this);
 			return rootView;
@@ -136,7 +137,7 @@ public class BusPictureActivity extends ActionBarActivity{
 			switch (id) {
 			case 0:
 				String selection = BusPicture.COLUMN_NAME_BUS_STATION_ID + "=?";
-			    String[] selectionArgs = {((BusPictureActivity) getActivity()).busStationId};
+				String[] selectionArgs = {((BusPictureActivity) getActivity()).busStationId};
 
 				return new CursorLoader(getActivity().getApplicationContext(),
 						BusPictureProvider.BUS_PICTURE_CONTENT_URI, projection, selection, selectionArgs, null);

@@ -15,7 +15,7 @@ public class ActivityLauncherUtils {
 	public static int BUS_PICTURE = 0;
 	public static int BUS_STATION = 1;
 	public static int PICTURE_VALIDATION = 2;
-	
+
 	public static void launchActivity(Activity activitySrc, int activityTarget, Map<String, String>params){
 		Intent intent;
 		switch (activityTarget) {
@@ -28,24 +28,16 @@ public class ActivityLauncherUtils {
 		case 2:
 			intent = new Intent(activitySrc, BusPictureValidationActivity.class);
 			break;
-//		case 3:
-//			intent = new Intent(activitySrc, PostPinActivity.class);
-//			break;
-//		case 4:
-//			intent = new Intent(activitySrc, CommentActivity.class);
-//			break;
-//		case 5:
-//			intent = new Intent(activitySrc, CommunityActivity.class);
-//			break;
+
 		default:
 			intent = new Intent(activitySrc, BusStationActivity.class);
 			break;
 		}
-		
+
 		if(params != null){
 			for(Map.Entry<String, String> param : params.entrySet()){
 				intent.putExtra(param.getKey(), param.getValue());
-	        }
+			}
 		}
 		intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		activitySrc.startActivity(intent);

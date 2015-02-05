@@ -4,14 +4,9 @@
     tools:context="com.aa.tagthebus.BusPictureValidationActivity" >
 
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    <item
         android:id="@+id/action_picture_validate"
-        android:icon="@drawable/ic_action_accept"
         aa:showAsAction="ifRoom"
+        android:icon="@drawable/ic_action_accept"
         android:title="@string/action_picture_validate"/>
 
 </menu>

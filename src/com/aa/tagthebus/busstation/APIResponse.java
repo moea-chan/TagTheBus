@@ -33,7 +33,7 @@ public class APIResponse{
 			this.nearstations = nearstations;
 		}
 	}
-	
+
 	public class BusStation {
 		private String id;
 		private String street_name;

@@ -2,17 +2,20 @@
 <resources>
 
     <string name="app_name">TagTheBus</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- BusPictureActivity -->
     <string name="title_activity_bus_picture">Vos Photos</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="action_take_picture">Prendre une photo</string>
+
+    <!-- BusPictureValidationActivity -->
     <string name="title_activity_bus_picture_validation">Choissez un titre</string>
     <string name="bus_picture_validation_name_hint">Titre de la photo</string>
-    
     <string name="action_picture_validate">Validation</string>
-    <string name="action_take_picture">Prendre une photo</string>
-    
-    
     <string name="error_picture_name_missing">Veuillez renseigner un nom</string>
+
+    <!-- Errors -->
+    <string name="action_check_connectivity">Réessayer</string>
     <string name="error_generic">Une erreur est survenue, merci de bien vouloir réessayer</string>
+    <string name="error_network">Pas de connexion internet. Veuillez vous connecter et réessayer</string>
 
 </resources>
